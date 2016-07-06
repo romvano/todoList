@@ -1,0 +1,14 @@
+.datepicker {
+    height: 65px;
+    width: 100%;
+    margin: 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.note_text_input {
+    height: 65px !important;
+    width: 100%;
+    margin: 1px;
+}

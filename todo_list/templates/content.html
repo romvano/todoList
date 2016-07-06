@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        {% block add_note %}
+        {% endblock add_note %}
+    </div>
+    <div class="row">
+        {% block list_notes %}
+        {% endblock list_notes %}
+    </div>
+{% endblock content %}

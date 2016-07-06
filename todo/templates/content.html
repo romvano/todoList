@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="starter-template" role="main">
+    <div class="row well">
+        {% block add_note %}
+            {% include "add_note.html" %}
+        {% endblock add_note %}
+    </div>
+    <hr />
+    <div class="row">
+        {% block list_notes %}
+            {% include "list_notes.html" %}
+        {% endblock list_notes %}
+    </div>
+</div>
+{% endblock content %}

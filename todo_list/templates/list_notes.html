@@ -1,0 +1,17 @@
+{% extends content.html %}
+
+{% block list_notes %}
+    {% for note in note_list %}
+        <div class="col-md-2">
+            <p class="{{ note_class }}">{{ note.deadline }}</p>
+        </div>
+        <div class="col-md-8">
+            <p class="{{ note_class }}">{{ note.text }}</p>
+        </div>
+        <div class="col-md-2">
+            <form method="POST" action="delete/">
+                <input type="hidden" name="to_delete" value="{{ note.pk }}" />
+                <input type="submit" />
+            </form>
+    {% endfor %}
+{% endblock list_notes %}

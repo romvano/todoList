@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% block list_notes %}
+    {% for note in note_list %}
+        <table class="table">
+            <tr>
+                <td class="col-md-2 td">
+                    <p class="note-{% if note.is_done %}done{% elif note.is_overtimed %}overtimed{% else %}normal{% endif %}">{{ note.deadline }}</p>
+                </td>
+                <td class="col-md-8 td-margin">
+                    <p class="note-{% if note.is_done %}done{% elif note.is_overtimed %}overtimed{% else %}normal{% endif %}">{{ note.text }}</p>
+                </td>
+                <td class="col-md-2 td">
+                    <form method="POST" action="delete/">
+                        <input type="hidden" name="to_delete" value="{{ note.pk }}" />
+                        <input type="submit" class="form-control" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+    {% empty %}
+        <hr />
+        <p class="text-center"><i>There is no notes yet.</i></p>
+    {% endfor %}
+{% endblock list_notes %}
