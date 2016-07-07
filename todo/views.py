@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from models import *
 
 def todo( request ):
@@ -19,3 +20,19 @@ def delete( request ):
 
 def add( request ):
     return
+
+def do_undo( request ):
+    if not request.user.is_authenticated():
+        return HttpResponse( 'Please log in to perform this action' )
+    try:
+        note = Note.objects.get( pk = request.POST.get( 'do_undo' ) )
+        if 'done' in request.POST.keys():
+            note.is_done = True
+            note.save()
+        elif 'done' not in request.POST.keys():
+            note.is_done = False
+            note.save()
+    except:
+        return HttpResponse( 'Something gone wrong!' )
+    else:
+        return HttpResponse( 0 )

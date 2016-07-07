@@ -12,3 +12,16 @@
     width: 100%;
     margin: 1px;
 }
+
+.td-padding {
+    padding-top: 20px !important;
+}
+
+.note-overtimed {
+    color: red;
+}
+
+.note-done {
+    text-decoration: line-through !important;
+    color: gray !important;
+}

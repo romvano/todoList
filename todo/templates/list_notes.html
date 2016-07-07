@@ -3,19 +3,27 @@
     {% for note in note_list %}
         <table class="table">
             <tr>
-                <td class="col-md-2 td">
-                    <p class="note-{% if note.is_done %}done{% elif note.is_overtimed %}overtimed{% else %}normal{% endif %}">{{ note.deadline }}</p>
+                <td class="col-md-1">
+                    <form method="POST" class="js-do_undo">
+                        {% csrf_token %}
+                        <input type="hidden" name="do_undo" value="{{ note.pk }}" />
+                        <input type="checkbox" name="done" {% if note.is_done %}checked="true"{% endif %} class="form-control js-do_undo" />
+                    </form>
                 </td>
-                <td class="col-md-8 td-margin">
-                    <p class="note-{% if note.is_done %}done{% elif note.is_overtimed %}overtimed{% else %}normal{% endif %}">{{ note.text }}</p>
+                <td class="col-md-3 td-padding">
+                    <p class="note-{% if note.is_overtimed %}overtimed{% else %}normal{% endif %} {% if note.is_done %}note-done{% endif %} js-note">{{ note.deadline }}</p>
                 </td>
-                <td class="col-md-2 td">
+                <td class="col-md-7 td-padding">
+                    <p class="note-{% if note.is_overtimed %}overtimed{% else %}normal{% endif %} {% if note.is_done %}note-done{% endif %} js-note">{{ note.text }}</p>
+                </td>
+                <td class="col-md-1 td">
                     <form method="POST" action="delete/">
                         <input type="hidden" name="to_delete" value="{{ note.pk }}" />
                         <input type="submit" class="form-control" value="Delete" />
                     </form>
                 </td>
             </tr>
+        </table>
     {% empty %}
         <hr />
         <p class="text-center"><i>There is no notes yet.</i></p>
