@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 from models import *
 
 def todo( request ):
@@ -8,6 +9,8 @@ def todo( request ):
     context = {
         'note_list': note_list,
     }
+    for n in note_list:
+        print n.is_overtimed()
     return render( request, 'content.html', context )
 
 def delete( request ):
@@ -23,15 +26,19 @@ def add( request ):
 
 def do_undo( request ):
     if not request.user.is_authenticated():
-        return HttpResponse( 'Please log in to perform this action' )
+        raise PermissionDenied
     try:
         note = Note.objects.get( pk = request.POST.get( 'do_undo' ) )
+        if note.user != User.objects.get( username = request.user.username ):
+            raise PermissionDenied
         if 'done' in request.POST.keys():
             note.is_done = True
             note.save()
         elif 'done' not in request.POST.keys():
             note.is_done = False
             note.save()
+    except PermissionDenied:
+        return HttpResponse( 'Permission denied!' )
     except:
         return HttpResponse( 'Something gone wrong!' )
     else:

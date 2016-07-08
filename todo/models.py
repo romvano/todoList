@@ -13,9 +13,9 @@ class Profile( models.Model ):
 class Note( models.Model ):
     user = models.ForeignKey( User, null = False )
     text = models.TextField( 'Text', null = False, blank = False )
-    deadline = models.DateTimeField( 'Deadline', default=timezone.now() )#+ timedelta( 1 ) )
+    deadline = models.DateTimeField( 'Deadline', default=timezone.now() + timedelta( 1 ) )
     is_done = models.BooleanField( 'Is Done', default = False )
     def is_overtimed( self ):
-        return self.deadline >= timezone.make_aware( datetime.now(), timezone.get_default_timezone() )
+        return self.deadline < timezone.make_aware( datetime.now(), timezone.get_default_timezone() )
     def __str__( self ):
         return self.text
