@@ -2,12 +2,13 @@
 {% block list_notes %}
     {% for note in note_list %}
         <table class="table">
-            <tr>
+            <tr class="js-tr">
                 <td class="col-md-1">
-                    <form method="POST" class="js-do_undo">
+                    <form method="POST" class="js-do_undo" action="/list/do_undo-nojs/">
                         {% csrf_token %}
-                        <input type="hidden" name="do_undo" value="{{ note.pk }}" />
+                        <input type="hidden" name="pk" value="{{ note.pk }}" />
                         <input type="checkbox" name="done" {% if note.is_done %}checked="true"{% endif %} class="form-control js-do_undo" />
+                        <noscript><input type="submit" value="Confirm!" class="form-control" /></noscript>
                     </form>
                 </td>
                 <td class="col-md-3 td-padding">
@@ -17,8 +18,9 @@
                     <p class="note-{% if note.is_overtimed %}overtimed{% else %}normal{% endif %} {% if note.is_done %}note-done{% endif %} js-note_text">{{ note.text }}</p>
                 </td>
                 <td class="col-md-1 td">
-                    <form method="POST" action="delete/">
-                        <input type="hidden" name="to_delete" value="{{ note.pk }}" />
+                    <form method="POST" action="list/delete-nojs/" class="js-delete">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ note.pk }}" />
                         <input type="submit" class="form-control" value="Delete" />
                     </form>
                 </td>

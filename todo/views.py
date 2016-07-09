@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
@@ -13,33 +13,43 @@ def todo( request ):
         print n.is_overtimed()
     return render( request, 'content.html', context )
 
-def delete( request ):
-    try:
-        note = Note.objects.get( pk = request.POST[ 'to_delete' ] )
-        note.delete()
-    except:
-        return 1
-    return 0
+def perform( action ):
+    def improved_action( request ):
+        try:
+            if not request.user.is_authenticated():
+                raise PermissionDenied
+            note = Note.objects.get( pk = request.POST.get( 'pk' ) )
+            if note.user.username != request.user.username:
+                raise PermissionDenied
+            action( request, note )
+        except PermissionDenied:
+            return HttpResponse( 'Permission denied!' )
+        except:
+            return HttpResponse( 'Something gone wrong!' )
+        else:
+            return HttpResponse( 0 )
+    return improved_action
+
 
 def add( request ):
     return
 
-def do_undo( request ):
-    if not request.user.is_authenticated():
-        raise PermissionDenied
-    try:
-        note = Note.objects.get( pk = request.POST.get( 'do_undo' ) )
-        if note.user != User.objects.get( username = request.user.username ):
-            raise PermissionDenied
-        if 'done' in request.POST.keys():
-            note.is_done = True
-            note.save()
-        elif 'done' not in request.POST.keys():
-            note.is_done = False
-            note.save()
-    except PermissionDenied:
-        return HttpResponse( 'Permission denied!' )
-    except:
-        return HttpResponse( 'Something gone wrong!' )
+@perform
+def delete( request, note ):
+    note.delete()
+
+def delete_nojs( request ):
+    delete( request )
+    return redirect( 'todo' )
+
+@perform
+def do_undo( request, note ):
+    if 'done' in request.POST.keys():
+        note.is_done = True
     else:
-        return HttpResponse( 0 )
+        note.is_done = False
+    note.save()
+
+def do_undo_nojs( request ):
+    do_undo( request )
+    return redirect( 'todo' )
