@@ -5,6 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import date, timedelta, datetime
+import json
 from models import *
 
 def todo( request ):
@@ -12,8 +13,6 @@ def todo( request ):
     context = {
         'note_list': note_list,
     }
-    for n in note_list:
-        print n.is_overtimed()
     return render( request, 'content.html', context )
 
 def perform( action ):
@@ -39,17 +38,17 @@ def add( request ):
         text = request.POST[ 'note_text' ]
         if text == '':
             return HttpResponse( 'The note is empty' )
-        deadline = datetime( 1, 1, 1 )
         try:
-            deadline = datetime( request.POST[ 'deadline' ] )
+            deadline = datetime.strptime( request.POST[ 'deadline' ], '%Y/%m/%d %I:%M')
+            note = Note( text=text, deadline=deadline, user=request.user )
         except:
-            deadline = None
-        note = Note( text=text, deadline=dealine, user = request.user )
-        note.save()
+            note = Note( text=text, user=request.user )
+        finally:
+            note.save()
     except:
         return HttpResponse( 'Error!' )
     else:
-        return HttpResponse( { 'code': 0, 'text': text, 'deadline': deadline } )
+        return HttpResponse( json.dumps( { 'code': 0, 'text': text, 'deadline': str( deadline ) } ) )
 
 def add_nojs( request ):
     add( request )

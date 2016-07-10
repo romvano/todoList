@@ -1,8 +1,9 @@
 {% load staticfiles %}
 {% block add_note %}
     <form method="POST" action="/list/add-nojs/" class="js-add">
+        {% csrf_token %}
         <div class="col-md-3 text-center">
-            <input type="datetime" name="datepicker" class="datepicker form-control js-datepicker" placeholder="Choose the deadline..." name="deadline" required />
+            <input type="datetime" name="deadline" class="datepicker form-control js-datepicker" placeholder="Choose the deadline..." required />
         </div>
         
         <div class="col-md-9">
