@@ -8,4 +8,5 @@ urlpatterns = [
     url( r'^delete/?$', views.delete, name = 'delete' ),
     url( r'^delete-nojs/?$', views.delete_nojs, name = 'delete-nojs' ),
     url( r'^add/?$', views.add, name = 'add' ),
+    url( r'^add-nojs/?$', views.add_nojs, name = 'add-nojs' ),
 ]

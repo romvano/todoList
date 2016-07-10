@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import date, timedelta, datetime
 from models import *
 
 def todo( request ):
@@ -30,9 +33,27 @@ def perform( action ):
             return HttpResponse( 0 )
     return improved_action
 
-
+@login_required
 def add( request ):
-    return
+    try:
+        text = request.POST[ 'note_text' ]
+        if text == '':
+            return HttpResponse( 'The note is empty' )
+        deadline = datetime( 1, 1, 1 )
+        try:
+            deadline = datetime( request.POST[ 'deadline' ] )
+        except:
+            deadline = None
+        note = Note( text=text, deadline=dealine, user = request.user )
+        note.save()
+    except:
+        return HttpResponse( 'Error!' )
+    else:
+        return HttpResponse( { 'code': 0, 'text': text, 'deadline': deadline } )
+
+def add_nojs( request ):
+    add( request )
+    return redirect( 'todo' )
 
 @perform
 def delete( request, note ):

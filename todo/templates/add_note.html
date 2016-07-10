@@ -1,12 +1,13 @@
 {% load staticfiles %}
 {% block add_note %}
-    <div class="col-md-3 text-center">
-        <div>
-            <input type="datetime" name="datepicker" class="datepicker form-control" id="js-datepicker" placeholder="Choose the deadline..." />
+    <form method="POST" action="/list/add-nojs/" class="js-add">
+        <div class="col-md-3 text-center">
+            <input type="datetime" name="datepicker" class="datepicker form-control js-datepicker" placeholder="Choose the deadline..." name="deadline" required />
         </div>
-    </div>
-    
-    <div class="col-md-9">
-        <textarea class="form-control note_text_input" rows="1" placeholder="Remember to do..."></textarea>
-    </div> 
+        
+        <div class="col-md-9">
+            <textarea class="form-control note_text_input js-add_text" rows="1" placeholder="Remember to do..." name="note_text" required></textarea>
+            <noscript><input type="submit" class="form-control" value="Add note!" /></noscript>
+        </div> 
+    </form>
 {% endblock add_note %}

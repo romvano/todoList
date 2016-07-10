@@ -1,3 +1,3 @@
 $( function() {
-    $( "#js-datepicker" ).datepicker();
+    $( ".js-datepicker:eq( 0 )" ).datetimepicker();
 } );
