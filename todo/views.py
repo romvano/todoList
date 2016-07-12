@@ -1,18 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import date, timedelta, datetime
-import json
 from models import *
 
+@login_required
 def todo( request ):
     note_list = Note.objects.filter( user__pk = request.user.id ).order_by( '-is_overtimed' ).order_by( 'deadline' )
     context = {
         'note_list': note_list,
     }
+    if request.user.is_authenticated():
+        context[ 'useremail' ] = request.user.email
     return render( request, 'content.html', context )
 
 def perform( action ):
@@ -39,7 +42,7 @@ def add( request ):
         if text == '':
             return HttpResponse( 'The note is empty' )
         try:
-            deadline = datetime.strptime( request.POST[ 'deadline' ], '%Y/%m/%d %I:%M')
+            deadline = datetime.strptime( request.POST[ 'deadline' ], '%Y/%m/%d %I:%M' )
             note = Note( text=text, deadline=deadline, user=request.user )
         except:
             note = Note( text=text, user=request.user )
@@ -48,7 +51,7 @@ def add( request ):
     except:
         return HttpResponse( 'Error!' )
     else:
-        return HttpResponse( json.dumps( { 'code': 0, 'text': text, 'deadline': str( deadline ) } ) )
+        return HttpResponse( 0 )
 
 def add_nojs( request ):
     add( request )
@@ -73,3 +76,4 @@ def do_undo( request, note ):
 def do_undo_nojs( request ):
     do_undo( request )
     return redirect( 'todo' )
+

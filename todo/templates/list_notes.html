@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% block list_notes %}
+    <table class="table">
     {% for note in note_list %}
-        <table class="table">
             <tr class="js-tr">
                 <td class="col-md-1">
                     <form method="POST" class="js-do_undo" action="/list/do_undo-nojs/">
@@ -25,8 +25,8 @@
                     </form>
                 </td>
             </tr>
-        </table>
     {% empty %}
+    </table>
         <hr />
         <p class="text-center"><i>There is no notes yet.</i></p>
     {% endfor %}

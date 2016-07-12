@@ -18,10 +18,28 @@
                 <a class="navbar-brand" href="/">TODO List</a>
             </div>
             <div class="collapse navbar-collapse">
-                <ul class="nav navbar-header">
-                    {% block username %}
-                    {% endblock username %}
-                </ul>
+                {% if useremail %}
+                    <ul class="nav navbar-header navbar-right logout">
+                        <li>
+                            <form action='/logout/' method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="log_out" name="log_out" />
+                                <input type="submit" class="form-control" value="Log out" />
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-header navbar-right email">
+                        <li class="active">
+                            {{ useremail }}
+                        </li>
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-header navbar-right email">
+                        <li class="active">
+                            <a href="/registration/">Sign up!</a>
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </nav>
 
