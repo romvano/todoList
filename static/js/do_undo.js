@@ -16,7 +16,6 @@ $( function() {
                     alert( resp );
                 }
             },
-            // TODO
             error: function( resp ) {
                 if( resp == '<h1>403 Forbidden</h1>' ) {
                     alert( 'Incorrect user!' );

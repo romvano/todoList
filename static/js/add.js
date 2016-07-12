@@ -25,11 +25,12 @@ $( function() {
                         alert( response );
                     }
                 },
-                // TODO
                 error: function( resp ) {
                         alert( 'Incorrect user!' );
                 },
             } );
+        } else if( args.which == 13 && !$( '.js-datepicker:eq( 0 )' ).val().match( /^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/ ) ) {
+            alert( 'Please fill out the deadline! Date format should be: YYYY/MM/DD HH:MM' );
         }
     } );
 } );
