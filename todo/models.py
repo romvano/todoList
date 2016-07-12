@@ -12,7 +12,7 @@ class Profile( models.Model ):
 
 class Note( models.Model ):
     user = models.ForeignKey( User, null = False )
-    text = models.TextField( 'Text', null = False, blank = False )
+    text = models.TextField( 'Text', null = False, blank = False, max_length = 300 )
     deadline = models.DateTimeField( 'Deadline', default=timezone.now() + timedelta( 1 ) )
     is_done = models.BooleanField( 'Is Done', default = False )
     def is_overtimed( self ):

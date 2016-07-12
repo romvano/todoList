@@ -4,7 +4,7 @@ $( function() {
     } );
     $( '.js-add_text:eq( 0 )' ).keypress( function( args ) {
         var self = $( this );
-        if( args.which == 13 && $( '.js-add_text:eq( 0 )' ).val() != '' && $( '.js-datepicker:eq( 0 )' ).val().match( /^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/ ) ) {
+        if( args.which == 13 && $( '.js-add_text:eq( 0 )' ).val().match( /./ ) && $( '.js-datepicker:eq( 0 )' ).val().match( /^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/ ) ) {
             $.ajax( {
                 url: '/list/add/',
                 type: 'post',
