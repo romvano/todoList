@@ -2,3 +2,4 @@
 *.~
 *.swo
 *.swp
+db.sqlite3
