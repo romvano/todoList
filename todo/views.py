@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import date, timedelta, datetime
+import json
 from models import *
 
 @login_required
@@ -51,7 +52,7 @@ def add( request ):
     except:
         return HttpResponse( 'Error!' )
     else:
-        return HttpResponse( 0 )
+        return HttpResponse( json.dumps( { 'code': 0, 'pk': note.pk, 'text': note.text, 'deadline': str( note.deadline ) } ) )
 
 def add_nojs( request ):
     add( request )
